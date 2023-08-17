@@ -3,24 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Core.Enteties;
+using Core.Interfacies;
 using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.GraphQL
 {
     public class Query
     {
         [UseFiltering]
-        public IQueryable<Customer> GetCustomers([Service] OMAContext context)
+        public IQueryable<Customer> GetCustomers([Service] ICustomerService customerService)
         {
-            context.Database.EnsureCreated();
-            return context.Customers;
+            return customerService.GetCustomersAndOrders();
         }
 
         [UseFiltering]
-        public IQueryable<Order> GetOrders([Service] OMAContext context)
+        public IQueryable<Order> GetOrders([Service] IOrderService orderService)
         {
-            context.Database.EnsureCreated();
-            return context.Orders;
+            return orderService.GetOrders();
         }
     }
 }
